@@ -12,20 +12,5 @@ using System.Web;
 
 namespace Identity.Web
 {
-    public class CustomSigninManager : SignInManager<User, int>
-    {        
-
-        public CustomSigninManager(CustomUserManager userManager, IAuthenticationManager authManager):
-            base(userManager, authManager)
-        {
-
-        }
-
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(User user)
-        {
-            var userIdentity = UserManager.CreateIdentityAsync(user, MainEntry.CookieAuthType);
-            // Add custom user claims here
-            return userIdentity;
-        }
-    }
+    
 }

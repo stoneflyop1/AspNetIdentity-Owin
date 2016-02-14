@@ -10,61 +10,43 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Identity.Auth;
+using Identity.Services;
 
 namespace Identity.Web.Controllers
 {
     public class UserController : Controller
     {
-        private CustomSigninManager _signInManager;
-        private CustomUserManager _userManager;
+
+        private IUserService _userService;
 
         public UserController()
         {
         }
 
-        public UserController(CustomUserManager userManager, CustomSigninManager signInManager)
+        public UserController(CustomUserManager userManager, CustomSigninManager signInManager
+            , IAuthenticationManager authManager)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            _userService = new UserService(userManager, signInManager, authManager);
         }
 
-        public CustomSigninManager SignInManager
+        public IUserService UserService
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<CustomSigninManager>();
+                if (_userService == null)
+                {
+                    _userService = new UserService(HttpContext.GetOwinContext());
+                }
+                return _userService;
             }
-            private set
-            {
-                _signInManager = value;
-            }
-        }
-
-        public CustomUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<CustomUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        }       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(MainEntry.CookieAuthType);
+            //AuthenticationManager.SignOut(MainEntry.CookieAuthType);
+            UserService.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -89,7 +71,9 @@ namespace Identity.Web.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(
+            //var result = await SignInManager.PasswordSignInAsync(
+            //    model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await UserService.PasswordSignInAsync(
                 model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
@@ -123,11 +107,12 @@ namespace Identity.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                //var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserService.RegisterAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await UserService.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     // For more information on how to enable account confirmation and
                     // password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
