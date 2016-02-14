@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.DataHandler;
+using Microsoft.Owin.Security.DataProtection;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,8 @@ namespace Identity.Auth
         /// WebAPI中Token的认证类型
         /// </summary>
         public static readonly string TokenAuthType = DefaultAuthenticationTypes.ExternalBearer;
+
+        public static CookieAuthenticationOptions CookieOptions { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -32,8 +36,10 @@ namespace Identity.Auth
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             // Configure the sign in cookie
-
-            var cookieOptions = new CookieAuthenticationOptions
+            IDataProtector dataProtector = app.CreateDataProtector(
+                    typeof(CookieAuthenticationMiddleware).FullName,
+                    CookieAuthType, "v1");
+            CookieOptions = new CookieAuthenticationOptions
             {
                 AuthenticationType = CookieAuthType,
                 LoginPath = new PathString(loginPath),
@@ -45,14 +51,15 @@ namespace Identity.Auth
                 //        validateInterval: TimeSpan.FromMinutes(30),
                 //        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 //}
+                TicketDataFormat = new TicketDataFormat(dataProtector)
             };
 
             if (cookieProvider != null)
             {
-                cookieOptions.Provider = cookieProvider;
+                CookieOptions.Provider = cookieProvider;
             }
 
-            app.UseCookieAuthentication(cookieOptions);
+            app.UseCookieAuthentication(CookieOptions);
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 

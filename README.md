@@ -1,7 +1,7 @@
 # 结合Owin使用ASPNet Identity
 ## 项目构成
 * Identity.Core                —— 类库，包括实体对象以及数据访问
-* Identity.Auth                —— 类库，认证信息
+* Identity.Auth                —— 类库，用户认证的配置等
 * Identity.Services            —— 类库，业务逻辑，包括用户注册、登录以及注销等
 * Identity.Web                 —— 空的WebApp，带有Cookie的网站及Token认证的WebAPI
 * Identity.ConsoleClient       —— 控制台程序，测试网站和WebAPI的客户端
