@@ -39,7 +39,17 @@ namespace Identity.Web.Controllers
                 }
                 return _userService;
             }
-        }       
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                UserService.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -51,8 +61,25 @@ namespace Identity.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public async Task<ActionResult> Login(string returnUrl, string token)
         {
+            if (!String.IsNullOrEmpty(token))
+            {
+                var ticket = MainEntry.GetTicketFromCookie(token);
+                if (ticket != null)
+                {
+                    var identity = ticket.Identity;
+                    if (identity != null && identity.IsAuthenticated)
+                    {
+                        var user = await UserService.GetByIdAsync(identity.GetUserId<int>());
+                        if (user != null)
+                        {
+                            await UserService.SignInAsync(user, false, false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
+                }
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -141,7 +168,7 @@ namespace Identity.Web.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }

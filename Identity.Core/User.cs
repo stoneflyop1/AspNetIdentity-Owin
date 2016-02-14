@@ -7,6 +7,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Identity.Core
 {
+    /// <summary>
+    /// IUser&lt;int&gt;
+    /// </summary>
     public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>
     {
 

@@ -12,6 +12,9 @@ using Identity.Auth;
 
 namespace Identity.Services
 {
+    /// <summary>
+    /// Sign In Operations for users
+    /// </summary>
     public class CustomSigninManager : SignInManager<User, int>
     {
 

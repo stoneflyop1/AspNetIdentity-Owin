@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Identity.Services
 {
-    public interface IUserService
+    public interface IUserService : IDisposable
     {
         Task<IdentityResult> RegisterAsync(User user, string password);
 
@@ -20,6 +20,10 @@ namespace Identity.Services
             bool rememberMe=false, bool shouldLockout=false);
 
         Task SignInAsync(User user, bool isPersistent = false, bool rememberBrowser = false);
+
+        Task<User> GetByIdAsync(int userId);
+
+        User GetById(int userId);
 
         void SignOut(string authType = null);
     }
@@ -57,6 +61,16 @@ namespace Identity.Services
             return _userManager.CreateAsync(user, password);
         }
 
+        public Task<User> GetByIdAsync(int userId)
+        {
+            return _userManager.FindByIdAsync(userId);
+        }
+
+        public User GetById(int userId)
+        {
+            return _userManager.FindById(userId);
+        }
+
         public Task SignInAsync(User user, bool isPersistent = false, bool rememberBrowser = false)
         {
             return _signinManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -69,6 +83,19 @@ namespace Identity.Services
                 authType = MainEntry.CookieAuthType;
             }
             _authManager.SignOut(authType);
+        }
+
+        public void Dispose()
+        {
+            if (_userManager != null)
+            {
+                _userManager.Dispose();
+            }
+
+            if (_signinManager != null)
+            {
+                _signinManager.Dispose();
+            }
         }
     }
 }

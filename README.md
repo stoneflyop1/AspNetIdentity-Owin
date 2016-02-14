@@ -1,23 +1,37 @@
-# ½áºÏOwinÊ¹ÓÃASPNet Identity
-## ÏîÄ¿¹¹³É
-* Identity.Core                ¡ª¡ª Àà¿â£¬°üÀ¨ÊµÌå¶ÔÏóÒÔ¼°Êı¾İ·ÃÎÊ
-* Identity.Auth                ¡ª¡ª Àà¿â£¬ÓÃ»§ÈÏÖ¤µÄÅäÖÃµÈ
-* Identity.Services            ¡ª¡ª Àà¿â£¬ÒµÎñÂß¼­£¬°üÀ¨ÓÃ»§×¢²á¡¢µÇÂ¼ÒÔ¼°×¢ÏúµÈ
-* Identity.Web                 ¡ª¡ª ¿ÕµÄWebApp£¬´øÓĞCookieµÄÍøÕ¾¼°TokenÈÏÖ¤µÄWebAPI
-* Identity.ConsoleClient       ¡ª¡ª ¿ØÖÆÌ¨³ÌĞò£¬²âÊÔÍøÕ¾ºÍWebAPIµÄ¿Í»§¶Ë
-## ÒıÓÃµÄNuget°ü
+ï»¿# ç»“åˆOwinä½¿ç”¨AspNet Identity
+
+## é¡¹ç›®æ„æˆ
+* Identity.Core         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       â€”â€” ç±»åº“ï¼ŒåŒ…æ‹¬å®ä½“å¯¹è±¡ä»¥åŠæ•°æ®è®¿é—®
+* Identity.Auth         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       â€”â€” ç±»åº“ï¼Œç”¨æˆ·è®¤è¯çš„é…ç½®ç­‰
+* Identity.Services     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       â€”â€” ç±»åº“ï¼Œä¸šåŠ¡é€»è¾‘ï¼ŒåŒ…æ‹¬ç”¨æˆ·æ³¨å†Œã€ç™»å½•ä»¥åŠæ³¨é”€ç­‰
+* Identity.Web          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       â€”â€” ç©ºçš„WebAppï¼Œå¸¦æœ‰Cookieçš„ç½‘ç«™åŠTokenè®¤è¯çš„WebAPI
+* Identity.ConsoleClient   &nbsp;&nbsp;&nbsp;     â€”â€” æ§åˆ¶å°ç¨‹åºï¼Œæµ‹è¯•ç½‘ç«™å’ŒWebAPIçš„å®¢æˆ·ç«¯
+
+## å¼•ç”¨çš„NugetåŒ…
 * Install-Package Microsoft.AspNet.Identity.EntityFramework -projectName Identity.Core
-* Install-Package Microsoft.AspNet.Identity.Owin -projectName Identity.Services (»á×Ô¶¯ÒıÈë£ºMicrosoft.AspNet.Identity.Core£¬Microsoft.Owin£¬Microsoft.Owin.Security£¬Microsoft.Owin.Security.Cookies£¬Microsoft.Owin.Security.OAuth£¬Newtonsoft.Json)
-* Install-Package Microsoft.AspNet.Mvc -projectName Identity.Web  (»á×Ô¶¯ÒıÈë£ºMicrosoft.AspNet.Razor£¬Microsoft.AspNet.WebPages£¬Microsoft.Web.Infrastructure)
+* Install-Package Microsoft.AspNet.Identity.Owin -projectName Identity.Services (ä¼šè‡ªåŠ¨å¼•å…¥ï¼šMicrosoft.AspNet.Identity.Coreï¼ŒMicrosoft.Owinï¼ŒMicrosoft.Owin.Securityï¼ŒMicrosoft.Owin.Security.Cookiesï¼ŒMicrosoft.Owin.Security.OAuthï¼ŒNewtonsoft.Json)
+* Install-Package Microsoft.AspNet.Mvc -projectName Identity.Web  (ä¼šè‡ªåŠ¨å¼•å…¥ï¼šMicrosoft.AspNet.Razorï¼ŒMicrosoft.AspNet.WebPagesï¼ŒMicrosoft.Web.Infrastructure)
 * Install-Package Microsoft.AspNet.Identity.Owin -projectName Identity.Web 
 * Install-Package Microsoft.Owin.Host.SystemWeb -projectName Identity.Web
-×¢£ºÈô´´½¨ÊÓÍ¼Ê±Ñ¡ÔñÁËÊ¹ÓÃ²¼¾Ö(_Layout)£¬Ôò»á×Ô¶¯ÒıÈëbootstrap£¬jQuery£¬ModernizrµÄNuget°ü¡£
-## AspNet IdentityµÄ´î½¨
-Ê¹ÓÃÁËEFµÄIdentityÊµÏÖ£¬Ö÷¼üÀàĞÍÊ¹ÓÃÁËÕûĞÍ£¬¶ø²»ÊÇ×Ö·û´®¡£Ö÷ÒªÉæ¼°µÄÀàÓĞ£º
-* User      <= IdentityUser<TKey, TLogin, TRole, TClaim>
-* Role      <= IdentityRole<TKey, TUserRole>
-* UserClaim <= IdentityUserClaim<TKey>
-* UserLogin <= IdentityUserLogin<TKey>
-* UserRole  <= IdentityUserRole<TKey>
 
+æ³¨ï¼šè‹¥åˆ›å»ºè§†å›¾æ—¶é€‰æ‹©äº†ä½¿ç”¨å¸ƒå±€(_Layout)ï¼Œåˆ™ä¼šè‡ªåŠ¨å¼•å…¥bootstrapï¼ŒjQueryï¼ŒModernizrçš„NugetåŒ…ã€‚
 
+## AspNet Identity
+ä½¿ç”¨äº†EFçš„Identityå®ç°ï¼Œä¸»é”®ç±»å‹ä½¿ç”¨äº†`int`ï¼Œè€Œä¸æ˜¯*string*ã€‚ä¸»è¦æ¶‰åŠçš„å®ä½“ç±»æœ‰ï¼š
+* [User](Identity.Core/User.cs)      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<= IdentityUser&lt;TKey, TLogin, TRole, TClaim&gt;
+* [Role](Identity.Core/Role.cs)      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<= IdentityRole&lt;TKey, TUserRole&gt;
+* [UserClaim](Identity.Core/UserClaim.cs)                          &nbsp;&nbsp;&nbsp;&nbsp;<= IdentityUserClaim&lt;TKey&gt;
+* [UserLogin](Identity.Core/UserLogin.cs)                          &nbsp;&nbsp;&nbsp;&nbsp;<= IdentityUserLogin&lt;TKey&gt;
+* [UserRole](Identity.Core/UserRole.cs)                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<= IdentityUserRole&lt;TKey&gt;
+
+å…³é”®çš„ä¸€äº›å…¶ä»–ç±»æœ‰ï¼š
+* [CustomDbContext](Identity.Core/CustomDbContext.cs)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<= IdentityDbContext&lt;TUser, TRole, TKey, TUserLogin, TUserRole, TUserClaim&gt;
+* [CustomUserStore](Identity.Core/CustomUserStore.cs)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<= UserStore&lt;TUser, TRole, TKey, TUserLogin, TUserRole, TUserClaim&gt;
+* [CustomUserManager](Identity.Core/CustomUserManager.cs) &nbsp;&nbsp;&nbsp;&nbsp;<= UserManager&lt;TUser, TKey&gt;
+* [CustomSigninManager](Identity.Services/CustomSigninManager.cs) &nbsp;&nbsp;<= SignInManager&lt;TUser, TKey&gt;
+
+å„ä¸ªç±»ä¹‹é—´çš„å…³ç³»ï¼š Userå’ŒRoleç­‰å®ä½“ç±» => IdentityDbContext => UserStore => UserManager => SignInManagerã€‚
+IdentityDbContextæ•°æ®åº“ä¸­çš„è¡¨è·Ÿç”¨æˆ·ç›¸å…³çš„å®ä½“ç±»ä¸€ä¸€å¯¹åº”ï¼›
+UserStoreå°è£…äº†å¯¹ç”¨æˆ·çš„æ“ä½œï¼Œä¸å†éœ€è¦ç›´æ¥é¢å¯¹æ•°æ®è®¿é—®å±‚ï¼›
+UserManageråˆ™å¯¹ç”¨æˆ·å±æ€§åšäº†ä¸€äº›é™å®š(æ¯”å¦‚ï¼šç”¨æˆ·åã€é‚®ç®±å’Œå¯†ç çš„è§„åˆ™)ï¼Œé€šè¿‡UserStoreæ“ä½œç”¨æˆ·åŠç”¨æˆ·çš„ä¿¡æ¯ï¼›
+SignInManagerå¤„ç†ç”¨æˆ·çš„ç™»å½•ï¼Œè·ŸOwinçš„è®¤è¯ä¸­é—´ä»¶æœ‰å…³ï¼Œé€šè¿‡UserManageréªŒè¯ç”¨æˆ·ç™»å½•æ˜¯å¦åˆæ³•ã€‚
