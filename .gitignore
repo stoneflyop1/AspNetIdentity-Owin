@@ -187,3 +187,6 @@ FakesAssemblies/
 
 # vs config folder
 .vs/
+
+# http://stackoverflow.com/questions/33136353/strange-subfolder-dtar-08e86330-4835-4b5c-9e5a-61f37ae1a077-dtar-created-in-vs
+DTAR_*_DTAR/
