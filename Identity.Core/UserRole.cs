@@ -9,5 +9,8 @@ namespace Identity.Core
 {
     public class UserRole : IdentityUserRole<int>
     {
+        //public int UserId { get; set; }
+
+        //public int RoleId { get; set; }
     }
 }
