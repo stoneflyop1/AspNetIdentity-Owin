@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Identity.Core
 {
-    public class UserRole : IdentityUserRole<int>
+    public class UserRole
     {
-        //public int UserId { get; set; }
+        public int UserId { get; set; }
 
-        //public int RoleId { get; set; }
+        public int RoleId { get; set; }
     }
 }
