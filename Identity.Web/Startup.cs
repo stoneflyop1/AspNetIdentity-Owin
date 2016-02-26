@@ -20,15 +20,15 @@ namespace Identity.Web
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(()=>new CustomDbContext());
-            app.CreatePerOwinContext<CustomUserManager>(CreateUserManager);
-            app.CreatePerOwinContext<CustomSigninManager>((options,context) =>
-            new CustomSigninManager(context.GetUserManager<CustomUserManager>(), context.Authentication));
+            app.CreatePerOwinContext<UserManager<User,int>>(CreateUserManager);
+            app.CreatePerOwinContext<SignInManager<User, int>>((options,context) =>
+            new CustomSigninManager(context.GetUserManager<UserManager<User, int>>(), context.Authentication));
 
-            MainEntry.ConfigureAuth(app, "/User/Login");
+            MainEntry.ConfigureAuth(app, "/User/Login", new CustomOAuthProvider("public_client_id"));
         }
 
-        public static CustomUserManager CreateUserManager(
-            IdentityFactoryOptions<CustomUserManager> options, IOwinContext context)
+        public static UserManager<User,int> CreateUserManager(
+            IdentityFactoryOptions<UserManager<User, int>> options, IOwinContext context)
         {
             var manager = new CustomUserManager(new CustomUserStore(context.Get<CustomDbContext>()));
             // Configure validation logic for usernames

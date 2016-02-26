@@ -13,5 +13,11 @@ namespace Identity.Web.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public ActionResult Data()
+        {
+            return Json("home data", JsonRequestBehavior.AllowGet);
+        }
     }
 }

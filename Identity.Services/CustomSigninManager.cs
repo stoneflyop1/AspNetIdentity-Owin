@@ -18,7 +18,7 @@ namespace Identity.Services
     public class CustomSigninManager : SignInManager<User, int>
     {
 
-        public CustomSigninManager(CustomUserManager userManager, IAuthenticationManager authManager) :
+        public CustomSigninManager(UserManager<User,int> userManager, IAuthenticationManager authManager) :
             base(userManager, authManager)
         {
 

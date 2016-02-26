@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Web", "Identity.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Auth", "Identity.Auth\Identity.Auth.csproj", "{18AE2B1C-FC73-4B61-869C-29BB10A5D65D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.ConsoleClient", "Identity.ConsoleClient\Identity.ConsoleClient.csproj", "{342705BC-E189-4B7B-9163-B4A551133F9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{18AE2B1C-FC73-4B61-869C-29BB10A5D65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18AE2B1C-FC73-4B61-869C-29BB10A5D65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18AE2B1C-FC73-4B61-869C-29BB10A5D65D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342705BC-E189-4B7B-9163-B4A551133F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342705BC-E189-4B7B-9163-B4A551133F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342705BC-E189-4B7B-9163-B4A551133F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342705BC-E189-4B7B-9163-B4A551133F9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

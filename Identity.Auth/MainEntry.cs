@@ -5,6 +5,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataHandler;
 using Microsoft.Owin.Security.DataProtection;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Collections.Generic;
@@ -21,27 +22,29 @@ namespace Identity.Auth
         /// </summary>
         public static readonly string CookieAuthType = DefaultAuthenticationTypes.ApplicationCookie;
 
+        public static readonly string OAuthType = DefaultAuthenticationTypes.ExternalBearer;
+
         public static readonly string CookieName = "testauth";
         /// <summary>
         /// WebAPI中Token的认证类型
         /// </summary>
         public static readonly string TokenAuthType = DefaultAuthenticationTypes.ExternalBearer;
 
+
+        private static ISecureDataFormat<AuthenticationTicket> TokenTicketFormat;
+
         public static CookieAuthenticationOptions CookieOptions { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="loginPath">/User/Login</param>
-        /// <param name="cookieProvider"></param>
-        public static void ConfigureAuth(IAppBuilder app, string loginPath
-            , ICookieAuthenticationProvider cookieProvider=null)
+
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
+        public static void ConfigCookieAuth(IAppBuilder app, string loginPath
+            , ICookieAuthenticationProvider cookieProvider = null)
         {
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information 
             // about a user logging in with a third party login provider
             // Configure the sign in cookie
-            IDataProtector dataProtector = app.CreateDataProtector(
+            IDataProtector cookieDataProtector = app.CreateDataProtector(
                     typeof(CookieAuthenticationMiddleware).FullName,
                     CookieAuthType, "v1");
             CookieOptions = new CookieAuthenticationOptions
@@ -49,7 +52,7 @@ namespace Identity.Auth
                 AuthenticationType = CookieAuthType,
                 CookieName = CookieName,
                 LoginPath = new PathString(loginPath),
-                TicketDataFormat = new TicketDataFormat(dataProtector)
+                TicketDataFormat = new TicketDataFormat(cookieDataProtector)
             };
 
             if (cookieProvider != null)
@@ -58,6 +61,64 @@ namespace Identity.Auth
             }
 
             app.UseCookieAuthentication(CookieOptions);
+        }
+
+        private static ISecureDataFormat<AuthenticationTicket> GetTokenTicketFormat(IAppBuilder app)
+        {
+            if (TokenTicketFormat == null)
+            {
+                var tokenDataProtector = app.CreateDataProtector(
+                    typeof(OAuthBearerAuthenticationMiddleware).Namespace,
+                    "Access_Token", "v1");
+                TokenTicketFormat = new TicketDataFormat(tokenDataProtector);
+            }
+            return TokenTicketFormat;
+        }
+        /// <summary>
+        /// OAuth Token Producer
+        /// </summary>
+        /// <param name="app"></param>
+        public static void ConfigureOAuthServer(IAppBuilder app, IOAuthAuthorizationServerProvider provider)
+        {
+            
+
+            OAuthOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/Token"),
+                AuthenticationType = OAuthType,
+                AccessTokenFormat = GetTokenTicketFormat(app),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AllowInsecureHttp = true
+            };
+            if (provider != null)
+            {
+                OAuthOptions.Provider = provider;
+            }
+
+            app.UseOAuthBearerTokens(OAuthOptions);
+        }
+        /// <summary>
+        /// OAuth Token Consumer
+        /// </summary>
+        /// <param name="app"></param>
+        public static void ConfigureOAuthClient(IAppBuilder app)
+        {
+            app.UseOAuthBearerAuthentication(
+                new OAuthBearerAuthenticationOptions{ AccessTokenFormat = GetTokenTicketFormat(app) });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="loginPath">/User/Login</param>
+        /// <param name="cookieProvider"></param>
+        public static void ConfigureAuth(IAppBuilder app, string loginPath
+            , IOAuthAuthorizationServerProvider provider)
+        {
+
+            ConfigCookieAuth(app, loginPath, null);
+
+            ConfigureOAuthServer(app, provider);
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
@@ -72,6 +133,17 @@ namespace Identity.Auth
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             
+        }
+
+        public static AuthenticationTicket GetTicketFromToken(string token)
+        {
+            if (OAuthOptions == null) return null;
+            try
+            {
+                return OAuthOptions.AccessTokenFormat.Unprotect(token);
+            }
+            catch { }
+            return null;
         }
 
         public static AuthenticationTicket GetTicketFromCookie(string cookie)

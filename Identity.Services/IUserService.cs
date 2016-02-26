@@ -30,18 +30,18 @@ namespace Identity.Services
 
     public class UserService : IUserService
     {
-        private readonly CustomUserManager _userManager;
-        private readonly CustomSigninManager _signinManager;
+        private readonly UserManager<User, int> _userManager;
+        private readonly SignInManager<User, int> _signinManager;
         private readonly IAuthenticationManager _authManager;
 
         public UserService(IOwinContext context)
         {
-            _userManager = context.GetUserManager<CustomUserManager>();
-            _signinManager = context.Get<CustomSigninManager>();
+            _userManager = context.GetUserManager<UserManager<User,int>>();
+            _signinManager = context.Get<SignInManager<User, int>>();
             _authManager = context.Authentication;
         }
 
-        public UserService(CustomUserManager userManager, CustomSigninManager signinManager
+        public UserService(UserManager<User, int> userManager, SignInManager<User, int> signinManager
             , IAuthenticationManager authManager)
         {
             _userManager = userManager;
